@@ -34,3 +34,12 @@ The `slice()` method returns a shallow copy of a portion of an array into a new 
   const mapped = Array.from([1,2,3], elem=>elem*2)
   // 2,4,6
   ```
+
+## Day 2
+Read [Airbnb's javascript style guide](https://github.com/airbnb/javascript):
+* From [7.7 Use default parameter syntax...](https://github.com/airbnb/javascript#es6-default-parameters) 
+* To [15.5 Use braces to create blocks in case and default clauses...](https://github.com/airbnb/javascript#comparison--switch-blocks) 
+
+## Things that I think it would be hard to remember for Day 2
+1. [14.2 Anonymous function expressions hoist their variable name, but not the function assignment.](https://github.com/airbnb/javascript#hoisting--anon-expressions)
+2. [14.3 Named function expressions hoist the variable name, not the function name or the function body.](https://github.com/airbnb/javascript#hoisting--named-expressions)
