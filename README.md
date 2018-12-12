@@ -1,6 +1,22 @@
 # rjs
 (re)studying javascript
 
+Table of Contents
+=================
+
+   * [rjs](#rjs)
+      * [Prerequisites](#prerequisites)
+      * [Day 1](#day-1)
+      * [Clearing up questions for Day 1](#clearing-up-questions-for-day-1)
+         * [1. Array.prototype.slice() in <a href="https://github.com/airbnb/javascript#arrays--from-array-like">4.5</a>:](#1-arrayprototypeslice-in-45)
+         * [2. Array.from in <a href="https://github.com/airbnb/javascript#arrays--mapping">4.6</a>](#2-arrayfrom-in-46)
+      * [Day 2](#day-2)
+      * [Things that I think it would be hard to remember for Day 2](#things-that-i-think-it-would-be-hard-to-remember-for-day-2)
+      * [Day 3](#day-3)
+      * [Things that I find useful for Day 3](#things-that-i-find-useful-for-day-3)
+
+Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
+
 ## Prerequisites
 * Have read the latest edition of ["Learning javascript"](http://shop.oreilly.com/product/9780596527464.do) at least three times.
 * Have read ["You Don't Know JS"](https://github.com/getify/You-Dont-Know-JS) at least once
