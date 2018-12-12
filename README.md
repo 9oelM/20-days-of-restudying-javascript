@@ -1,8 +1,15 @@
-# js
-studying javascript
+# rjs
+(re)studying javascript
+
+## Prerequisites
+* Have read the latest edition of ["Learning javascript"](http://shop.oreilly.com/product/9780596527464.do) at least three times.
+* Have read ["You Don't Know JS"](https://github.com/getify/You-Dont-Know-JS) at least once
+* Have coded substantial amount of javascript already
+* Now wanting to get some really fine techniques on javascript
 
 ## Day 1
 Read [Airbnb's javascript style guide](https://github.com/airbnb/javascript):
+* :hourglass:: 30 ~ 60 mins
 * From [1. Types](https://github.com/airbnb/javascript#types) 
 * To  [7.6 Never use arguments, opt to use rest syntax ...](https://github.com/airbnb/javascript#es6-rest)
 
@@ -37,9 +44,27 @@ The `slice()` method returns a shallow copy of a portion of an array into a new 
 
 ## Day 2
 Read [Airbnb's javascript style guide](https://github.com/airbnb/javascript):
+* :hourglass:: 30 ~ 60 mins
 * From [7.7 Use default parameter syntax...](https://github.com/airbnb/javascript#es6-default-parameters) 
 * To [15.5 Use braces to create blocks in case and default clauses...](https://github.com/airbnb/javascript#comparison--switch-blocks) 
 
 ## Things that I think it would be hard to remember for Day 2
 1. [14.2 Anonymous function expressions hoist their variable name, but not the function assignment.](https://github.com/airbnb/javascript#hoisting--anon-expressions)
 2. [14.3 Named function expressions hoist the variable name, not the function name or the function body.](https://github.com/airbnb/javascript#hoisting--named-expressions)
+
+## Day 3
+Read [Airbnb's javascript style guide](https://github.com/airbnb/javascript):
+* :hourglass:: 45 ~ 60 mins
+* From [15.6 Ternaries should not be nested...](https://github.com/airbnb/javascript#comparison--nested-ternaries) 
+* To [30.2 No, but seriously:](https://github.com/airbnb/javascript#testing--for-real) (The end)
+
+## Things that I find useful for Day 3
+* [18.4 You can use `FIXME` or `TODO` to annotate something in the comment.](https://github.com/airbnb/javascript#comments--actionitems)  
+* [19.6 Use indentation when making long method chains...](https://github.com/airbnb/javascript#whitespace--chains)
+* [21.1 Use semicolons.](https://github.com/airbnb/javascript#semicolons--required): You know, I don't really use semicolons in Javascript because the code tends to look cleaner. But airbnb certainly has suggested possible grounds for this, such as:
+  * "rules will become more complicated as new features become a part of JavaScript. Explicitly terminating your statements and configuring your linter to catch missing semicolons will help prevent you from encountering issues."
+  * But doesn't `prettier` do the job for filling out all the semicolons? I will have to dig into this a bit more. 
+* [22.2 Type casting for strings: don't use new keyword, but just 'String', because using the new keyword will let javascript recognize the variable as an object. (typeof)](https://github.com/airbnb/javascript#coercion--strings)
+* [23.4 Do not use trailing or leading underscores.](https://github.com/airbnb/javascript#naming--leading-underscore)
+* [25.1 When attaching data payloads to events (whether DOM events or something more proprietary like Backbone events), pass an object literal (also known as a "hash") instead of a raw value. ](https://github.com/airbnb/javascript#events--hash)
+* [29.1 Use `Number.isNaN` instead of `isNaN` (same for `Number.isFinite`)](https://github.com/airbnb/javascript#standard-library--isnan)
