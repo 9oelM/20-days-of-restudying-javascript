@@ -84,3 +84,25 @@ Read [Airbnb's javascript style guide](https://github.com/airbnb/javascript):
 * [23.4 Do not use trailing or leading underscores.](https://github.com/airbnb/javascript#naming--leading-underscore)
 * [25.1 When attaching data payloads to events (whether DOM events or something more proprietary like Backbone events), pass an object literal (also known as a "hash") instead of a raw value. ](https://github.com/airbnb/javascript#events--hash)
 * [29.1 Use `Number.isNaN` instead of `isNaN` (same for `Number.isFinite`)](https://github.com/airbnb/javascript#standard-library--isnan)
+
+## Day 4 (Started learning functional javascript)
+
+* :hourglass:: 20 mins
+Gathered up some resources 
+
+## List of possible sources (I did not include sample code repos or fp libaries)
+### Books
+* [Mostly adequate guide to FP](https://github.com/MostlyAdequate/mostly-adequate-guide)
+* [Functional Light JS](https://github.com/getify/Functional-Light-JS)
+
+### Articles
+* [Short read on functional javascript: the good parts](https://github.com/seanhess/functional-javascript)
+* [JavaScript Functional Programming Cookbook (ES6)](https://github.com/js-functional/js-funcional)
+* [Real world functional programming in JS: Tips and guidelines for real world functional code-bases in JS](https://github.com/haskellcamargo/js-real-world-functional-programmingv)
+* [ALDO FP Guide](https://github.com/aldo-dev/javascript)
+
+### Others
+* [Awesome functional programming (Really comprehensive!)](https://github.com/xgrommx/awesome-functional-programming)
+* [List of awesome fp in js](https://github.com/stoeffel/awesome-fp-js)
+* [Functional JavaScript Resources](https://github.com/jkup/functional-javascript)
+* [Curation of resources in FP in javascript](https://github.com/busypeoples/functional-programming-javascript)
