@@ -1,27 +1,55 @@
-# rjs
-(re)studying javascript
+# 50-days-of-restudying-js
+Think you are confident with javascript? 
+Here's 50 Days of restudying javascript. 
 
-Table of Contents
-=================
-
-   * [rjs](#rjs)
-      * [Prerequisites](#prerequisites)
-      * [Day 1](#day-1)
-      * [Clearing up questions for Day 1](#clearing-up-questions-for-day-1)
-         * [1. Array.prototype.slice() in <a href="https://github.com/airbnb/javascript#arrays--from-array-like">4.5</a>:](#1-arrayprototypeslice-in-45)
-         * [2. Array.from in <a href="https://github.com/airbnb/javascript#arrays--mapping">4.6</a>](#2-arrayfrom-in-46)
-      * [Day 2](#day-2)
-      * [Things that I think it would be hard to remember for Day 2](#things-that-i-think-it-would-be-hard-to-remember-for-day-2)
-      * [Day 3](#day-3)
-      * [Things that I find useful for Day 3](#things-that-i-find-useful-for-day-3)
-
-Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
+# Topics
+- Preferrable practices
+- Functional & declartive programming
+- In-depth inspection: `Symbol`, `this`, `bind`, `WeakMap`, `WeakSet`, `Object`, `prototype`, `class`, `async`, `await`, and more. 
 
 # Prerequisites
 * Have read the latest edition of ["Learning javascript"](http://shop.oreilly.com/product/9780596527464.do) at least three times.
-* Have read ["You Don't Know JS"](https://github.com/getify/You-Dont-Know-JS) at least once
+* Have read ["You Don't Know JS"](https://github.com/getify/You-Dont-Know-JS) at least once (roughly is ok)
 * Have coded substantial amount of javascript already
 * Now wanting to get some really fine techniques on javascript
+
+# Table of Contents
+
+   * [50-days-of-restudying-js](#50-days-of-restudying-js)
+   * [Topics](#topics)
+   * [Prerequisites](#prerequisites)
+   * [Table of Contents](#table-of-contents)
+   * [Day 1](#day-1)
+      * [Clearing up questions for Day 1](#clearing-up-questions-for-day-1)
+         * [1. Array.prototype.slice() in <a href="https://github.com/airbnb/javascript#arrays--from-array-like">4.5</a>:](#1-arrayprototypeslice-in-45)
+         * [2. Array.from in <a href="https://github.com/airbnb/javascript#arrays--mapping">4.6</a>](#2-arrayfrom-in-46)
+   * [Day 2](#day-2)
+      * [Things that I think it would be hard to remember for Day 2](#things-that-i-think-it-would-be-hard-to-remember-for-day-2)
+   * [Day 3](#day-3)
+      * [Things that I find useful for Day 3](#things-that-i-find-useful-for-day-3)
+   * [Day 4 (Started learning functional javascript)](#day-4-started-learning-functional-javascript)
+      * [List of possible sources (I did not include sample code repos or fp libaries)](#list-of-possible-sources-i-did-not-include-sample-code-repos-or-fp-libaries)
+         * [Books](#books)
+         * [Articles](#articles)
+         * [Others](#others)
+   * [Day 5](#day-5)
+      * [Notes for Chapter 1](#notes-for-chapter-1)
+      * [Notes for chapter 2](#notes-for-chapter-2)
+   * [Day 6](#day-6)
+      * [Pure function](#pure-function)
+      * [What's possible in pure functions](#whats-possible-in-pure-functions)
+         * [1. Cache](#1-cache)
+            * [Why is pure function important at all here?](#why-is-pure-function-important-at-all-here)
+         * [2. Portable and self-documenting](#2-portable-and-self-documenting)
+         * [3. Testable](#3-testable)
+         * [4. Reasonable](#4-reasonable)
+         * [5. Parallel code](#5-parallel-code)
+   * [Day 7](#day-7)
+      * [Currying](#currying)
+      * [Currying examples](#currying-examples)
+      * [Just one more example](#just-one-more-example)
+
+Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 # Day 1
 Read [Airbnb's javascript style guide](https://github.com/airbnb/javascript):
@@ -191,3 +219,243 @@ And so, I will look at those two books mentioned in Day 4.
   Now you can run `ajaxCall` with as many arguments as you want to put in. Just treat it like any other variables. That's the point.
 
 * Note on naming functions: don't be too specific. Be broader so that you can use them for any other future projects. Make it reusable. 
+
+# Day 6
+
+* Read ['Chapter 03: Pure Happiness with Pure Functions' of Mostly adequate guide to FP ](https://github.com/MostlyAdequate/mostly-adequate-guide/blob/master/ch03.md)
+
+* :hourglass:: 30 ~ 60 mins
+
+## Pure function
+> A pure function is a function that, given the same input, will always return the same output and does not have any observable side effect.
+
+This is exactly the same principle for the definition of function in the world of real math: each input maps exactly to one (not several) output only. 
+
+To make it easy to write a pure function, do not rely on the variables from outside world. 
+
+You could 'freeze' or use other tools like [`immutable.js`](https://github.com/facebook/immutable-js/) to make sure that constant variables stay constant inside a function. 
+
+## What's possible in pure functions 
+### 1. Cache
+Pure functions can be cached by input. This technique is sometimes called memoization:
+
+> In computing, memoization or memoisation is an optimization technique used primarily to speed up computer programs by **storing the results of expensive function calls and returning the cached result when the same inputs occur again.**
+
+So this would be a simple code for `memoize`:
+```javascript
+const memoize = (f) => {
+  const cache = {};
+  return (...args) => {
+    const argStr = JSON.stringify(args);
+    console.log(argStr)
+    console.log(cache) // for help
+    cache[argStr] = cache[argStr] || f(...args);
+    return cache[argStr];
+  };
+};
+```
+This is only really a simple case for memoization. You simply store in `cache` object.
+
+Let's have a multiply function memoized:
+
+```javascript
+multiply=memoize((x,y)=>x*y)
+```
+
+1st time you run it, you get: 
+```
+multiply(1,2)
+[1,2]
+{}
+```
+
+But the 2nd time you call it:
+```
+multiply(1,2)
+[1,2]
+{[1,2]: 2}
+```
+
+Your input and the corresponding output were stored in the cache and those were used instead of calculating the result by running the function once more.
+
+#### Why is pure function important at all here?
+Because if the function were impure, there's no point in saving the function output in the cache, as it does not have a guarantee that it is going to be the same each time.
+
+### 2. Portable and self-documenting
+```javascript
+// impure
+const signUp = (attrs) => {
+  const user = saveUser(attrs);
+  welcomeUser(user);
+};
+
+// pure
+const signUp = (Db, Email, attrs) => () => {
+  const user = saveUser(Db, attrs);
+  welcomeUser(Email, user);
+};
+```
+1. **Pure function is honest about its dependencies** (signature). You know exactly what to use. It's more informative. 
+2. **You must use dependencies as function arguments.** Otherwise you've got no choice. It's more flexible and at the same time, self-documenting. But look at the impure version. You modify database and more without relying on the arguments. The logic is hidden behind.
+3. **Pure function, likewise, is portable.** You can serialize/send over pocket. You can run your code anywhere. 
+
+### 3. Testable
+**Outputs are always predictable**. Therefore you don't have to:
+
+> mock a "real" payment gateway or setup and assert the state of the world after each test.
+
+You just need input and predict (assert) output in your tests.
+
+### 4. Reasonable
+**Referential transparency**. Codes can be substituted around because you already know that output of function will stay the same anyways.
+
+You can use this property to easily refactor functions. For more, see [this part of the book](https://github.com/MostlyAdequate/mostly-adequate-guide/blob/master/ch03.md#reasonable).
+
+### 5. Parallel code
+Pure functions **do not need to access shared memory and cannot have a race condition due to side effects.**
+
+# Day 7
+* Read ['Chapter 04: Currying ](https://github.com/MostlyAdequate/mostly-adequate-guide/blob/master/ch04.md)
+
+* :hourglass:: 30~60 mins
+
+## Currying 
+
+**Currying** is:
+
+> In mathematics and computer science, currying is the technique of translating the evaluation of a function that takes multiple arguments into evaluating a sequence of functions, each with a single argument.
+
+For example,
+```javascript
+curry((x,y) => x*y)
+```
+will get curried down to
+```javascript
+x => y => x*y
+```
+
+Similarly,
+
+```javascript
+curry((x,y,z) => x*y*z)
+```
+will get curried down to
+```javascript
+x => y => => z => x*y*z
+```
+
+Simple, right? Here's a [definition of `curry`](https://github.com/MostlyAdequate/mostly-adequate-guide/blob/master/appendix_a.md#curry):
+
+```javascript
+// curry :: ((a, b, ...) -> c) -> a -> b -> ... -> c
+
+function curry(fn) {
+  const arity = fn.length;
+  return function $curry(...args) {
+    if (args.length < arity) {
+      return $curry.bind(null, ...args);
+    }
+
+    return fn.call(null, ...args);
+  };
+};
+```
+
+Let's inspect it. First change the code so that you can log outputs:
+```javascript
+function curry(fn) {
+  const arity = fn.length;
+  console.log(`arity: ${arity}`)
+  return function $curry(...args) {
+    console.log(`args: ${args}
+args.length: ${args.length}`)
+    if (args.length < arity) {
+      return $curry.bind(null, ...args);
+    }
+
+    return fn.call(null, ...args);
+  };
+};
+```
+
+Now run:
+```javascript
+multiply=curry((x,y,z) => x*y*z)
+```
+It of course logs:
+```
+arity: 3
+```
+
+Then run the function:
+```javascript
+multiply(1,2,3)
+```
+
+Then it logs
+```
+args:1,2,3
+args.length: 3
+// returns
+6
+```
+
+Cool. But what if `args.length < arity`? Let's try this out.
+```javascript
+const multiplyLast=multiply(1,2)
+// logs
+args: 1,2
+args.length: 2
+```
+Now
+```javascript
+multiplyLast(3)
+// logs
+args: 1,2,3
+args.length: 3
+// returns
+6
+```
+
+Wow. yeah. So you can actually stop the execution of function at certain point by manipulating the number of arguments. 
+
+## Currying examples 
+Now you can understand more of such functions:
+```javascript
+const match = curry((what, s) => s.match(what));
+const replace = curry((what, replacement, s) => s.replace(what, replacement));
+const filter = curry((f, xs) => xs.filter(f));
+const map = curry((f, xs) => xs.map(f));
+```
+
+Look at [these usages](https://github.com/MostlyAdequate/mostly-adequate-guide/blob/master/ch04.md#cant-live-if-livin-is-without-you). Beautiful. You can mix them around, plug them into each other, do whatever you want essentially. 
+```javascript
+match(/r/g, 'hello world'); // [ 'r' ]
+
+const hasLetterR = match(/r/g); // x => x.match(/r/g)
+hasLetterR('hello world'); // [ 'r' ]
+hasLetterR('just j and s and t etc'); // null
+
+filter(hasLetterR, ['rock and roll', 'smooth jazz']); // ['rock and roll']
+
+const removeStringsWithoutRs = filter(hasLetterR); // xs => xs.filter(x => x.match(/r/g))
+removeStringsWithoutRs(['rock and roll', 'smooth jazz', 'drum circle']); // ['rock and roll', 'drum circle']
+
+const noVowels = replace(/[aeiou]/ig); // (r,x) => x.replace(/[aeiou]/ig, r)
+const censored = noVowels('*'); // x => x.replace(/[aeiou]/ig, '*')
+censored('Chocolate Rain'); // 'Ch*c*l*t* R**n'
+```
+
+## Just one more example
+instead of 
+```javascript
+const allTheChildren = elements => map(elements, getChildren);
+```
+
+you can do
+```javascript
+const getChildren = x => x.childNodes;
+const allTheChildren = map(getChildren);
+```
+
+You can just directly transform the function into something that works on bunch of elements (array) instead of one element.
