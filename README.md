@@ -1,24 +1,13 @@
-# 50-days-of-restudying-js
+# 50-days-of-restudying-javascript
 Think you are confident with javascript? 
 Here's 50 Days of restudying javascript. 
 
-# Topics
-- Preferrable practices
-- Functional & declartive programming
-- In-depth inspection: `Symbol`, `this`, `bind`, `WeakMap`, `WeakSet`, `Object`, `prototype`, `class`, `async`, `await`, and more. 
+Table of Contents
+=================
 
-# Prerequisites
-* Have read the latest edition of ["Learning javascript"](http://shop.oreilly.com/product/9780596527464.do) at least three times.
-* Have read ["You Don't Know JS"](https://github.com/getify/You-Dont-Know-JS) at least once (roughly is ok)
-* Have coded substantial amount of javascript already
-* Now wanting to get some really fine techniques on javascript
-
-# Table of Contents
-
-   * [50-days-of-restudying-js](#50-days-of-restudying-js)
+   * [50-days-of-restudying-javascript](#50-days-of-restudying-javascript)
    * [Topics](#topics)
    * [Prerequisites](#prerequisites)
-   * [Table of Contents](#table-of-contents)
    * [Day 1](#day-1)
       * [Clearing up questions for Day 1](#clearing-up-questions-for-day-1)
          * [1. Array.prototype.slice() in <a href="https://github.com/airbnb/javascript#arrays--from-array-like">4.5</a>:](#1-arrayprototypeslice-in-45)
@@ -48,8 +37,28 @@ Here's 50 Days of restudying javascript.
       * [Currying](#currying)
       * [Currying examples](#currying-examples)
       * [Just one more example](#just-one-more-example)
+   * [Day 8](#day-8)
+      * [Compose](#compose)
+         * [Example](#example)
+      * [Pipe](#pipe)
+         * [Implementation](#implementation)
+      * [Pointfree](#pointfree)
+         * [Why is pointfree good?](#why-is-pointfree-good)
+            * [<a href="https://medium.freecodecamp.org/how-point-free-composition-will-make-you-a-better-functional-programmer-33dcb910303a" rel="nofollow">Toolboxes</a>](#toolboxes)
+            * [Pointfree with methods](#pointfree-with-methods)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
+
+# Topics
+- Preferrable practices
+- Functional & declartive programming
+- In-depth inspection: `Symbol`, `this`, `bind`, `WeakMap`, `WeakSet`, `Object`, `prototype`, `class`, `async`, `await`, and more. 
+
+# Prerequisites
+* Have read the latest edition of ["Learning javascript"](http://shop.oreilly.com/product/9780596527464.do) at least three times.
+* Have read ["You Don't Know JS"](https://github.com/getify/You-Dont-Know-JS) at least once (roughly is ok)
+* Have coded substantial amount of javascript already
+* Now wanting to get some really fine techniques on javascript
 
 # Day 1
 Read [Airbnb's javascript style guide](https://github.com/airbnb/javascript):
@@ -315,7 +324,7 @@ You can use this property to easily refactor functions. For more, see [this part
 Pure functions **do not need to access shared memory and cannot have a race condition due to side effects.**
 
 # Day 7
-* Read ['Chapter 04: Currying ](https://github.com/MostlyAdequate/mostly-adequate-guide/blob/master/ch04.md)
+* Read ['Chapter 04: Currying' ](https://github.com/MostlyAdequate/mostly-adequate-guide/blob/master/ch04.md)
 
 * :hourglass:: 30~60 mins
 
@@ -459,3 +468,204 @@ const allTheChildren = map(getChildren);
 ```
 
 You can just directly transform the function into something that works on bunch of elements (array) instead of one element.
+
+# Day 8
+* Read up to ['"Pointfree" Section of Chapter 05: Coding by Composing' of Mostly adequate guide to FP ](https://github.com/MostlyAdequate/mostly-adequate-guide/blob/master/ch05.md#pointfree)
+
+* :hourglass:: 45~60+ mins
+
+## Compose
+here's a simple version of compose function that only composes two functions:
+```javascript
+const compose = (f, g) => x => f(g(x));
+```
+simple. calls g first and then plugs that into f.
+
+But what if you wanted to chain like 10 functions through compose?
+
+```javascript
+const compose = (...fns) => x => fns.reduceRight((v, f) => f(v), x);
+```
+
+here it is.
+
+So first, we have to know about [`reduceRight`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/ReduceRight):
+
+> The reduceRight() method applies a function against an accumulator and each value of the array (**from right-to-left**) to reduce it to a single value.
+
+Ok. So `(v,f)=>f(v)` is actually an accumulator and `x` accounts for the current value.
+Example:
+
+```javascript
+const array1 = [[0, 1], [2, 3], [4, 5]].reduceRight(
+  (accumulator, currentValue) => {
+    console.log(`acc: ${accumulator}`)
+    console.log(`current: ${currentValue}`)
+    return accumulator.concat(currentValue)
+  }
+);
+
+console.log(array1);
+// expected output: Array [4, 5, 2, 3, 0, 1]
+
+> "acc: 4,5"
+> "current: 2,3"
+> "acc: 4,5,2,3"
+> "current: 0,1"
+> Array [4, 5, 2, 3, 0, 1]
+```
+
+Anyways, let's see what's happening again in that `compose` function.
+
+Let's kindly rewrite it with familiar terms:
+```javascript
+const compose = (...fns) => initialValue => fns.reduceRight((accumulator, fn) => fn(accumulator), initialValue)
+```
+
+- Ok. So `(value, fn) => fn(value)` is the callback
+and `initialValue` is literally just the initial value. Get to know that `reduceRight` takes two arguments: `callback` and `initialValue`, the second being optional, but specified in `compose` function.
+
+- Notice that `(accumulator, fn) => fn(accumulator)` simply returns an output of a function with an input which is `accumulator`. Actually, `fn` is the `currentValue` because for each time a different `fn` is called from `...fns`, from right to left.
+
+- Now when `compose` is run, the `initialValue` will be plugged into the place of `accumulator` in the callback, and the rightmost function supplied in `...fns` will receive `accumulator` to return an output. 
+
+- Now when the value is calculated and stored in `accumulator`, again the next function `fn` (second rightmost element in `fns`) will be called with it. 
+
+- This process will be repeated until `fns.length === 0`.
+
+- Also, notice that leaving `initialValue` field empty will simply not make it work because if so, it will grab the rightmost element from `fns` array, which is a function, not some value you want. 
+
+- Anyways, this way, you are going to continuously execute a function at a time and insert its output to the next function until you use all functions provided.
+
+### Example
+here's an example slightly modified from the book.
+```javascript
+const toUpperCase = x => x.toUpperCase();
+const exclaim = x => `${x}!`;
+const head = x => x[0];
+
+const loudFirst = compose(
+  toUpperCase,
+  exclaim,
+  head
+)
+loudFirst(['composing', 'is', 'cool'])
+// COMPOSING!
+```
+
+Then what's different for `reduce`? Same logic, but only **left-to-right**.
+Just look at the example from [MDN docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/ReduceRight#%E2%80%8B%E2%80%8B%E2%80%8B%E2%80%8B%E2%80%8B%E2%80%8BDi_fference_between_reduce_and_reduceRight):
+
+```javascript
+var a = ['1', '2', '3', '4', '5']; 
+var left  = a.reduce(function(prev, cur)      { return prev + cur; }); 
+var right = a.reduceRight(function(prev, cur) { return prev + cur; }); 
+
+console.log(left);  // "12345"
+console.log(right); // "54321"
+```
+simple. right?
+
+## Pipe
+`pipe(...fns)` is just an opposite of `compose` function. Sometimes it's more intuitive to put functions in the order of execution. So for example:
+instead of 
+```javascript
+const loudFirst = compose(
+  toUpperCase,
+  exclaim,
+  head
+)
+```
+you are going to write
+```javascript
+const loudFirst = compose(
+  head
+  exclaim,
+  toUpperCase
+)
+```
+
+### Implementation
+`pipe` is really similar to `compose`:
+```javascript
+pipe = (...fns) => x => fns.reduce((v, f) => f(v), x)
+```
+Actually, the only different thing is it uses `reduce` instead of `reduceRight`. This allows you to calculate from left to right, not right to left. That's why the order of function inputs are opposite.
+
+## Pointfree
+If your function is pointfree (it's also called tacit programming), it does not specify the arguments it uses. 
+
+From [Wikipedia](https://en.wikipedia.org/wiki/Tacit_programming):
+
+> Tacit programming, also called point-free style, is a programming paradigm in which function definitions do not identify the arguments (or "points") on which they operate.
+
+### Why is pointfree good?
+Ref article (there are some codes and sentences used from here): [https://medium.freecodecamp.org/how-point-free-composition-will-make-you-a-better-functional-programmer-33dcb910303a](https://medium.freecodecamp.org/how-point-free-composition-will-make-you-a-better-functional-programmer-33dcb910303a)
+
+> There is no additional anonymous callback when doing point-free composition. No function keyword, no arrow syntax => . All we see are function names.
+
+> The consequence of writing code this way is a lot of small functions with **intention revealing names**. Naming these small functions requires time, but if it’s done well, it will make **the code easier to read**.
+
+So rather than
+
+```javascript
+fetchTodos().then((todos) => {
+   let topTodos = getTopPriority(todos);
+   render(topTodos);
+ }).catch((error) => {
+   console.error("There was an error :" + error.status);
+ });
+function getTopPriority(todos){}
+function render(todos){}
+```
+
+You do
+```javascript
+fetchTodos()
+  .then(getTopPriority)
+  .then(render)
+  .catch(handleError);
+```
+
+#### [Toolboxes](https://medium.freecodecamp.org/how-point-free-composition-will-make-you-a-better-functional-programmer-33dcb910303a)
+
+1. `prop()`
+A general purpose function to retrieve a prop.
+```javascript
+let titles = books.map(prop("title"));
+function prop(propName){
+  return function getProp(obj){
+    return obj[propName];
+  }
+}
+```
+
+2. `unary()`
+Takes only one (the first) argument out from multiple arguments.
+```javascript
+let numbers = [1,2,3,4,5,6];
+numbers.forEach(console.log);
+//1 0 (6) [1, 2, 3, 4, 5, 6]
+//2 1 (6) [1, 2, 3, 4, 5, 6]
+//...
+// by default inserting a function ref will input all default arguments, so it's equivalent to:
+numbers.forEach((item, index, array) => console.log(item, index, array));
+// or easily
+numbers.forEach((...all) => console.log(...all))
+
+// so you do this
+function unary(fn){
+  return function unaryDecorator(first){
+    return fn.call(this, first);
+  }
+}
+
+numbers.forEach(unary(console.log));
+//1 2 3 4 5 6
+
+```
+
+#### Pointfree with methods
+- Factory function: you do not lose `this` context
+- Class: you lose it. You have to manually `bind` it
+- [See example code](https://medium.freecodecamp.org/how-point-free-composition-will-make-you-a-better-functional-programmer-33dcb910303a#b16c)
