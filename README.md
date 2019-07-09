@@ -1,11 +1,11 @@
-# 50-days-of-restudying-javascript
+# 20-days-of-restudying-javascript
 Think you are confident with javascript? 
-Here's 50 Days of restudying javascript. 
+Here's 20 Days of restudying javascript. 
 
 Table of Contents
 =================
 
-   * [50-days-of-restudying-javascript](#50-days-of-restudying-javascript)
+   * [20-days-of-restudying-javascript](#50-days-of-restudying-javascript)
    * [Topics](#topics)
    * [Prerequisites](#prerequisites)
    * [Day 1](#day-1)
