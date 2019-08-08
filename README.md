@@ -671,7 +671,7 @@ numbers.forEach(unary(console.log));
 - [See example code](https://medium.freecodecamp.org/how-point-free-composition-will-make-you-a-better-functional-programmer-33dcb910303a#b16c)
 
 # Day 9 
-* Read up to ['"Pointfree" Section of Chapter 05: Coding by Composing' of Mostly adequate guide to FP ](https://github.com/MostlyAdequate/mostly-adequate-guide/blob/master/ch05.md#pointfree)
+* Read up to [The end of Chapter 6: 'Example Application'](https://github.com/MostlyAdequate/mostly-adequate-guide/blob/master/ch06.md)
 
 * :hourglass:: 30 mins
 
