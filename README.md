@@ -669,3 +669,74 @@ numbers.forEach(unary(console.log));
 - Factory function: you do not lose `this` context
 - Class: you lose it. You have to manually `bind` it
 - [See example code](https://medium.freecodecamp.org/how-point-free-composition-will-make-you-a-better-functional-programmer-33dcb910303a#b16c)
+
+# Day 9 
+* Read up to ['"Pointfree" Section of Chapter 05: Coding by Composing' of Mostly adequate guide to FP ](https://github.com/MostlyAdequate/mostly-adequate-guide/blob/master/ch05.md#pointfree)
+
+* :hourglass:: 30 mins
+
+## Declarative coding
+
+It's just **stating the specification of what we would like as a result.** It's about **what**, not how. 
+
+Some perks of declarative coding:
+1. More freedom to an expression
+2. Clearer and more concise
+3. May be optimized faster by JIT
+
+Some example:
+
+```js
+  const cases = [1, 4, 5, 2, 0, 3, 9, 8]
+  // An imperative coding example
+  const someOverFive = (cases) => {
+    for (let i = 0; i < cases.length; i++){
+      if (cases[i] > 5){
+        return true
+      }
+    }
+    return false
+  }
+  someOverFive(cases)
+```
+
+You could do this... but,
+
+```js
+const cases = [1, 4, 5, 2, 0, 3, 9, 8]
+cases.some(c => c > 5)
+```
+
+what about this game changer. 
+
+## Impure vs pure functions
+
+If you are not sure about the difference between impure and pure functions, take a glimpse at [this stackoverflow answer](https://stackoverflow.com/questions/22395311/difference-between-pure-and-impure-function):
+
+### Characteristics of Pure Functions:
+
+1. The return value of the pure func­tions solely depends on its arguments Hence, if you call the pure func­tions with the same set of argu­ments, you will always get the same return values.
+2. They do not have any side effects like net­work or data­base calls
+3. They do not mod­ify the argu­ments which are passed to them
+
+### Characteristics of impure functions:
+1. The return value of the impure func­tions does not solely depend on its arguments Hence, if you call the impure func­tions with the same set of argu­ments, you might get the dif­fer­ent return values For exam­ple, Math.random(), Date.now()
+2. They may have any side effects like net­work or data­base calls
+3. They may mod­ify the argu­ments which are passed to them
+
+These are **impure** functions. 
+
+```js
+const Impure = {
+  getJSON: curry((callback, url) => $.getJSON(url, callback)),
+  setHtml: curry((sel, html) => $(sel).html(html)),
+  trace: curry((tag, x) => { console.log(tag, x); return x; }),
+};
+```
+
+Why?
+
+1. `getJSON` uses `$` which is a global variable. Also it fetches data over a network.
+2. `setHtml` depends on `$` which is not from its argument as well. 
+3. `trace` calls `console.log`. 
+
