@@ -5,7 +5,8 @@ Here's 20 Days of restudying javascript.
 Table of Contents
 =================
 
-   * [20-days-of-restudying-javascript](#50-days-of-restudying-javascript)
+   * [20-days-of-restudying-javascript](#20-days-of-restudying-javascript)
+   * [Table of Contents](#table-of-contents)
    * [Topics](#topics)
    * [Prerequisites](#prerequisites)
    * [Day 1](#day-1)
@@ -46,6 +47,14 @@ Table of Contents
          * [Why is pointfree good?](#why-is-pointfree-good)
             * [<a href="https://medium.freecodecamp.org/how-point-free-composition-will-make-you-a-better-functional-programmer-33dcb910303a" rel="nofollow">Toolboxes</a>](#toolboxes)
             * [Pointfree with methods](#pointfree-with-methods)
+   * [Day 9](#day-9)
+      * [Declarative coding](#declarative-coding)
+      * [Impure vs pure functions](#impure-vs-pure-functions)
+         * [Characteristics of Pure Functions:](#characteristics-of-pure-functions)
+         * [Characteristics of impure functions:](#characteristics-of-impure-functions)
+   * [Day 10](#day-10)
+      * [Type system](#type-system)
+      * [Parametricity](#parametricity)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
@@ -740,3 +749,55 @@ Why?
 2. `setHtml` depends on `$` which is not from its argument as well. 
 3. `trace` calls `console.log`. 
 
+# Day 10
+* Read up to [The End of Chapter 7: Hindley-Milner and Me](https://github.com/MostlyAdequate/mostly-adequate-guide/blob/master/ch07.md)
+* :hourglass:: 20 mins
+* _if you are already familiar with Typescript or any other strictly typed languages, you can probably skip day 10._
+
+## Type system
+
+- There is a type system that is quite similar to TypeScript, called **Hindley-Milner**.
+- It basically works like this:
+  ```javascript
+  // capitalize :: String -> String
+  const capitalize = s => toUpperCase(head(s)) + toLowerCase(tail(s));
+  ```
+- `capitalize :: String -> String` means a function that takes a string and returns a string.
+- More complex (but still easy to understand) example could be returning a function from a function:
+  ```javascript
+  // add :: Number -> Number -> Number
+  const add = x => y => x + y;
+
+  // match :: Regex -> (String -> [String])
+  const match = curry((reg, s) => s.match(reg));
+  // onHoliday :: String -> [String]
+  const onHoliday = match(/holiday/ig);
+  ```
+- **Type variables** can be used in the type signature. Type variables can be denoted by any letters (like a, b, c) or words:
+  ```javascript
+  // id :: a -> a
+  const id = x => x;
+
+  // map :: (a -> b) -> [a] -> [b]
+  const map = curry((f, xs) => xs.map(f));
+  ```
+
+## Parametricity
+
+- Type variable can introduce a property called **parametricity**: _a function will act on all types in a uniform manner_. When a function acts like this, it is said to be a "parametrically polymorphic function". In easier terms, it's just a generic function, which should come in very handy if you are already used to statically typed languages like Java, C#, Golang, Typescript, etc.
+- One example of a parametrically polymorphic function is `head`:
+  ```javascript
+  const head = ([first]) => first
+  ```
+  Its type signature is: 
+  ```
+  head :: [a] -> a
+  ```
+  And it can be rewritten in Typescript, with generics, as:
+  ```typescript
+  type Head = <T>(arr: T[]) => T
+
+  // for example, take in a number array
+  const head: Head<number> = ([first]) => first
+  ```
+- In short, parametricity is just a fancy term to describe a generic function.
