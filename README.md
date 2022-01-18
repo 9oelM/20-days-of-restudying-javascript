@@ -58,10 +58,10 @@ Table of Contents
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
-# Topics
-- Preferrable practices
-- Functional & declartive programming
-- In-depth inspection: `Symbol`, `this`, `bind`, `WeakMap`, `WeakSet`, `Object`, `prototype`, `class`, `async`, `await`, and more. 
+# Topics (fancy term: curriculum)
+- Preferrable practices in javascript
+- Functional & declartive programming using javascript
+- In-depth inspection: `Symbol`, `WeakMap`, `WeakSet`, `Object`, `prototype`, `this`, `bind`, `class`, `async`, `await`, `yield` and more. 
 
 # Prerequisites
 * Have read the latest edition of ["Learning javascript"](http://shop.oreilly.com/product/9780596527464.do) at least three times.
@@ -801,3 +801,10 @@ Why?
   const head: Head<number> = ([first]) => first
   ```
 - In short, parametricity is just a fancy term to describe a generic function.
+
+# Day 11
+
+* Read up to [The End of Chapter 8: Tupperware](https://github.com/MostlyAdequate/mostly-adequate-guide/blob/master/ch07.md)
+* :hourglass:: 20 mins
+
+So far we've studided how and when to use pure functions. Now we will study how to handle impure aspects of the code.
